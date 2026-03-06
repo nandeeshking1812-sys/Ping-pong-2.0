@@ -1,0 +1,162 @@
+const canvas = document.getElementById("pong");
+const ctx = canvas.getContext("2d");
+
+const PADDLE_WIDTH = 12, PADDLE_HEIGHT = 100;
+const BALL_SIZE = 15;
+
+let leftPaddle = { x: 15, y: (canvas.height - PADDLE_HEIGHT)/2, w: PADDLE_WIDTH, h: PADDLE_HEIGHT };
+let rightPaddle = { x: canvas.width - PADDLE_WIDTH - 15, y: (canvas.height - PADDLE_HEIGHT)/2, w: PADDLE_WIDTH, h: PADDLE_HEIGHT, dy: 0 };
+let ball = {
+    x: canvas.width/2 - BALL_SIZE/2,
+    y: canvas.height/2 - BALL_SIZE/2,
+    dx: 5 * (Math.random() > 0.5 ? 1 : -1),
+    dy: 4 * (Math.random() > 0.5 ? 1 : -1),
+    size: BALL_SIZE
+};
+let scores = { left: 0, right: 0 };
+
+let inputMode = "none";
+let keyPressed = { ArrowUp: false, ArrowDown: false };
+
+function drawRect(x, y, w, h, color, glowColor) {
+    ctx.save();
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+    
+    ctx.strokeStyle = glowColor;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+    
+    ctx.restore();
+}
+
+function drawBall(x, y, size) {
+    ctx.save();
+    ctx.shadowColor = "#ffe066";
+    ctx.shadowBlur = 25;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    ctx.fillStyle = "#ffe066";
+    ctx.beginPath();
+    ctx.arc(x + size/2, y + size/2, size/2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+function drawCenterLine() {
+    ctx.save();
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([15, 10]);
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2, 0);
+    ctx.lineTo(canvas.width/2, canvas.height);
+    ctx.stroke();
+    ctx.restore();
+}
+
+function updateScoreboard() {
+    document.getElementById("leftScore").textContent = scores.left;
+    document.getElementById("rightScore").textContent = scores.right;
+}
+
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    drawCenterLine();
+    drawRect(leftPaddle.x, leftPaddle.y, leftPaddle.w, leftPaddle.h, "#00ffb2", "#00ff88");
+    drawRect(rightPaddle.x, rightPaddle.y, rightPaddle.w, rightPaddle.h, "#ff006e", "#ff0080");
+    drawBall(ball.x, ball.y, ball.size);
+
+    if (inputMode === "keyboard") {
+        if (keyPressed.ArrowUp) leftPaddle.y -= 7;
+        if (keyPressed.ArrowDown) leftPaddle.y += 7;
+    }
+    if(leftPaddle.y < 0) leftPaddle.y = 0;
+    if(leftPaddle.y + leftPaddle.h > canvas.height) leftPaddle.y = canvas.height - leftPaddle.h;
+
+    let paddleCenter = rightPaddle.y + rightPaddle.h / 2;
+    if (ball.y + ball.size/2 < paddleCenter - 15) rightPaddle.dy = -5;
+    else if (ball.y + ball.size/2 > paddleCenter + 15) rightPaddle.dy = 5;
+    else rightPaddle.dy = 0;
+    rightPaddle.y += rightPaddle.dy;
+    if(rightPaddle.y < 0) rightPaddle.y = 0;
+    if(rightPaddle.y + rightPaddle.h > canvas.height) rightPaddle.y = canvas.height - rightPaddle.h;
+
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    if(ball.y <= 0 || ball.y + ball.size >= canvas.height) ball.dy *= -1;
+
+    if(ball.x <= leftPaddle.x + leftPaddle.w && ball.x > leftPaddle.x &&
+      ball.y + ball.size > leftPaddle.y && ball.y < leftPaddle.y + leftPaddle.h) {
+        ball.dx = -ball.dx * 1.05;
+        let impact = (ball.y + ball.size/2) - (leftPaddle.y + leftPaddle.h/2);
+        ball.dy = impact * 0.2 + Math.sign(ball.dy);
+        ball.x = leftPaddle.x + leftPaddle.w;
+    }
+
+    if(ball.x + ball.size >= rightPaddle.x && ball.x < rightPaddle.x + rightPaddle.w &&
+      ball.y + ball.size > rightPaddle.y && ball.y < rightPaddle.y + rightPaddle.h) {
+        ball.dx = -ball.dx * 1.05;
+        let impact = (ball.y + ball.size/2) - (rightPaddle.y + rightPaddle.h/2);
+        ball.dy = impact * 0.2 + Math.sign(ball.dy);
+        ball.x = rightPaddle.x - ball.size;
+    }
+
+    if(ball.x < 0) {
+        scores.right++;
+        updateScoreboard();
+        resetBall();
+    }
+    if(ball.x + ball.size > canvas.width) {
+        scores.left++;
+        updateScoreboard();
+        resetBall();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+function resetBall() {
+    ball.x = canvas.width/2 - BALL_SIZE/2;
+    ball.y = canvas.height/2 - BALL_SIZE/2;
+    ball.dx = 5 * (Math.random() > 0.5 ? 1 : -1);
+    ball.dy = 4 * (Math.random() > 0.5 ? 1 : -1);
+}
+
+canvas.addEventListener('mousemove', function(evt) {
+    inputMode = "mouse";
+    let rect = canvas.getBoundingClientRect();
+    let mouseY = evt.clientY - rect.top;
+    leftPaddle.y = mouseY - leftPaddle.h/2;
+    if(leftPaddle.y < 0) leftPaddle.y = 0;
+    if(leftPaddle.y + leftPaddle.h > canvas.height) leftPaddle.y = canvas.height - leftPaddle.h;
+});
+
+document.addEventListener('keydown', function(e) {
+    if(e.key === "ArrowUp") { inputMode = "keyboard"; keyPressed.ArrowUp = true; e.preventDefault(); }
+    if(e.key === "ArrowDown") { inputMode = "keyboard"; keyPressed.ArrowDown = true; e.preventDefault(); }
+});
+
+document.addEventListener('keyup', function(e) {
+    if(e.key === "ArrowUp") keyPressed.ArrowUp = false;
+    if(e.key === "ArrowDown") keyPressed.ArrowDown = false;
+});
+
+document.getElementById("resetBtn").addEventListener('click', function() {
+    scores.left = 0;
+    scores.right = 0;
+    updateScoreboard();
+    resetBall();
+});
+
+updateScoreboard();
+gameLoop();
