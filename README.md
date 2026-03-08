@@ -1,79 +1,114 @@
-# Ping Pong Game 🏓
+<h1 align="center">🏓 Ping Pong Game</h1>
 
-A classic two-player ping pong game built with HTML5 Canvas and JavaScript.
+<p align="center">
+A classic arcade-style Ping Pong game built using <b>HTML5 Canvas, CSS, and JavaScript</b>.
+</p>
 
-## 🎮 Features
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-Canvas-orange?style=for-the-badge&logo=html5">
+  <img src="https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3">
+  <img src="https://img.shields.io/badge/JavaScript-GameLogic-yellow?style=for-the-badge&logo=javascript">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge">
+</p>
 
-- Two-player gameplay
-- Smooth paddle controls
-- Ball physics with angle changes
-- Score tracking
-- Pause/Resume functionality
-- Winner detection (first to 5 points)
-- Retro arcade style
+## ✨ Features
 
-## 🎯 How to Play
+- 🎮 Two-player gameplay
+- ⚡ Smooth paddle movement
+- 🏓 Realistic ball physics
+- 📈 Dynamic ball speed increase
+- 🧮 Real-time score tracking
+- ⏸ Pause / Resume functionality
+- 🏆 Winner detection system
+- 🎨 Clean retro arcade style
 
-### Controls
+---
+
+## ⌨️ Controls
 
 | Player | Action | Key |
-|--------|--------|-----|
-| Player 1 (Left) | Move Up | **W** |
-| Player 1 (Left) | Move Down | **S** |
-| Player 2 (Right) | Move Up | **↑** |
-| Player 2 (Right) | Move Down | **↓** |
-| Both | Pause/Resume | **Space** |
+|------|------|------|
+| Player 1 | Move Up | **W** |
+| Player 1 | Move Down | **S** |
+| Player 2 | Move Up | **Arrow Up (↑)** |
+| Player 2 | Move Down | **Arrow Down (↓)** |
+| Both Players | Pause / Resume | **Spacebar** |
 
-### Rules
-1. First player to score **5 points** wins
-2. Ball speeds up slightly with each hit
-3. Ball angle changes based on where it hits the paddle
-4. Game can be paused anytime with Spacebar
+---
 
-## 🚀 How to Run
+## 🎯 Game Rules
 
-1. Download both files
-2. Put them in the same folder
-3. Double-click `index.html`
-4. Start playing!
+1. Two players compete against each other.
+2. Score a point when your opponent misses the ball.
+3. The first player to reach **5 points wins the match**.
+4. The ball speed increases slightly after each paddle hit.
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/ping-pong-game.git
+```
+
+### 2️⃣ Open the Project Folder
+
+```bash
+cd ping-pong-game
+```
+
+### 3️⃣ Run the Game
+
+Open the file below in your browser:
+
+```
+index.html
+```
+
+---
 
 ## 🛠️ Built With
 
-- HTML5 Canvas
-- CSS3
-- JavaScript (Vanilla)
+- **HTML5 Canvas**
+- **CSS3**
+- **JavaScript (Vanilla)**
 
-## ⌨️ Keyboard Shortcuts
+---
 
-- **W/S** - Left paddle control
-- **↑/↓** - Right paddle control
-- **Space** - Pause/Resume
-- **New Game** button - Reset match
+## 📂 Project Structure
 
-## 🎨 Features in Detail
+```
+ping-pong-game
+│
+├── index.html
+├── style.css
+├── script.js
+├── preview.png
+└── README.md
+```
 
-### Ball Physics
-- Realistic bouncing
-- Angle changes based on paddle contact point
-- Speed increases with gameplay
+---
 
-### Score System
-- Real-time score display
-- Winner announcement at 5 points
-- Reset option for new games
+## 🔮 Future Improvements
 
-### Visual Effects
-- Clean retro design
-- Center court line
-- Pause indicator
-- Winner celebration
+- 🤖 AI opponent mode
+- 📱 Mobile touch controls
+- 🔊 Sound effects
+- 🎨 Advanced animations
+- 🌐 Online multiplayer
 
-## 📝 License
+---
 
-MIT - Feel free to modify and share!
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
 
 ## 👨‍💻 Author
 
-Nandeesh k
+**Nandeesh K**
 
-**Made with ❤️ for classic arcade fun**
+Made with ❤️ using JavaScript
